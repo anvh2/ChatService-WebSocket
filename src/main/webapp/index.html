@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<h1>Demo WebSocket</h1>
+<h3 id="serverStatus"></h3>
+<div class="list-group" style="width: 25%;">
+    <button onclick="chatWith()" name="username" value="home" class="list-group-item list-group-item-action">Sherlock Home</button>
+    <button onclick="chatWith()" name="username" value="conan" class="list-group-item list-group-item-action">Detective Conan</button>
+    <button onclick="chatWith()" name="username" value="kid" class="list-group-item list-group-item-action">Kaito Kid</button>
+</div>
+    <div id="chat-frame">
+        <div id="name"></div>
+        <input id="textMessage" type="text" />
+        <input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>
+
+        <textarea id="textAreaMessage" rows="10" cols="50"></textarea>
+    </div>
+</body>
+<script type="text/javascript">
+    //get parameter from url
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+    //get username
+    var username = getUrlVars()["username"];
+    //create websocket
+    const websocket = new WebSocket("ws://localhost:8080/websocket/messenger/" + username);
+    const messageSend = document.getElementById("textMessage");
+    const messageWindow = document.getElementById("textAreaMessage");
+    var status = document.getElementById("serverStatus");
+
+    websocket.onopen = function() {
+        status.value = "Connected";
+    };
+    websocket.onmessage = function(message) {
+        console.log(message);
+        messageWindow.value += message.data + "\n";
+    };
+    websocket.onclose = function() {
+        messageWindow.value = "Server disconnected";
+    };
+    websocket.onerror = function(message) {
+        messageWindow.value += "Error: " + message + "\n";
+    };
+    function sendMessage() {
+        if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN) {
+            websocket.send(messageSend.value);
+            messageSend.value = "";
+        }
+    }
+
+    function chatWith() {
+        var user = document.getElementsByName("username");
+        var message = "user-" + "home"
+
+        if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN) {
+            websocket.send(message);
+        }
+    }
+</script>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Chat</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<input id="textMessage" type="text" />-->
+<!--<input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>-->
+
+<!--<textarea id="textAreaMessage" rows="10" cols="50"></textarea>-->
+<!--<script type="text/javascript">-->
+<!--    var messageSend = document.getElementById("textMessage");-->
+<!--    var messageWindow = document.getElementById("textAreaMessage");-->
+<!--    const websocket = new WebSocket("ws://localhost:8000/chat/hoangan");-->
+
+
+
+<!--    class Message{-->
+<!--        constructor(sender, receiver, content){-->
+<!--            this.sender = sender;-->
+<!--            this.receiver = receiver;-->
+<!--            this.content = content;-->
+<!--        }-->
+<!--    }-->
+
+<!--    websocket.onopen = function (event) {-->
+<!--        messageWindow.value += "Server connected!";-->
+<!--    }-->
+
+<!--    websocket.onmessage = function (event) {-->
+<!--        var object = JSON.parse(event.data);-->
+<!--        console.log(object);-->
+<!--        messageWindow.value += object.content;-->
+<!--    }-->
+
+<!--    websocket.onclose = function (event) {-->
+
+<!--    }-->
+
+<!--    websocket.onerror = function (event) {-->
+
+<!--    }-->
+
+<!--    function sendMessage() {-->
+<!--        if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {-->
+<!--            var message = new Message("hoangan", "hoaian", "Hello");-->
+<!--            websocket.send(JSON.stringify(message))-->
+<!--            messageSend.value ="";-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

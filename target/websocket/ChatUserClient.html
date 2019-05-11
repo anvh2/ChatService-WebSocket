@@ -1,0 +1,58 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Chat</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <input id="textMessage" type="text" />-->
+<!--    <input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>-->
+
+<!--    <textarea id="textAreaMessage" rows="10" cols="50"></textarea>-->
+<!--<script type="text/javascript">-->
+<!--    var messageSend = document.getElementById("textMessage");-->
+<!--    var messageWindow = document.getElementById("textAreaMessage");-->
+<!--    const websocket = new WebSocket("ws://localhost:8000/chat/hoangan");-->
+
+
+
+<!--    class Message{-->
+<!--        constructor(sender, receiver, content){-->
+<!--            this.sender = sender;-->
+<!--            this.receiver = receiver;-->
+<!--            this.content = content;-->
+<!--        }-->
+<!--    }-->
+
+<!--    websocket.onopen = function (event) {-->
+<!--        messageWindow.value += "Server connected!";-->
+<!--    }-->
+
+<!--    websocket.onmessage = function (event) {-->
+<!--        var object = JSON.parse(event.data);-->
+<!--        console.log(object);-->
+<!--        messageWindow.value += object.content;-->
+<!--    }-->
+
+<!--    websocket.onclose = function (event) {-->
+
+<!--    }-->
+
+<!--    websocket.onerror = function (event) {-->
+
+<!--    }-->
+
+<!--    function addMessageToWindow(event) {-->
+
+<!--    }-->
+
+<!--    function sendMessage() {-->
+<!--        if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {-->
+<!--            var message = new Message("hoangan", "hoaiphuong", "Hello");-->
+<!--            websocket.send(JSON.stringify(message))-->
+<!--            messageSend.value ="";-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
