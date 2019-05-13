@@ -1,10 +1,6 @@
 Entity/SessionManager.class
-MessageDecoder.class
-MessageEncoder.class
-ClientThread.class
-EntityDAO/UserDAO.class
-Message.class
-LoginServer.class
-ChatUserServerByString.class
+DAO/MessengerDAO.class
+Entity/Messenger.class
+ChatServer.class
+DAO/UserDAO.class
 Entity/User.class
-ChatUserServer.class

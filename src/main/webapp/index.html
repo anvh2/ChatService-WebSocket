@@ -32,19 +32,22 @@
     }
 
     //get username
-    var username = getUrlVars()["username"];
+    const username = getUrlVars()["username"];
     //create websocket
     const websocket = new WebSocket("ws://localhost:8080/websocket/messenger/" + username);
     const messageSend = document.getElementById("textMessage");
     const messageWindow = document.getElementById("textAreaMessage");
-    var status = document.getElementById("serverStatus");
+    const status = document.getElementById("serverStatus");
 
     websocket.onopen = function() {
         status.value = "Connected";
+        // alert(websocket.sessionId);
     };
     websocket.onmessage = function(message) {
-        console.log(message);
-        messageWindow.value += message.data + "\n";
+        if (message.data.length > 0){
+            console.log(message);
+            messageWindow.value += message.data + "\n";
+        }
     };
     websocket.onclose = function() {
         messageWindow.value = "Server disconnected";
@@ -53,15 +56,15 @@
         messageWindow.value += "Error: " + message + "\n";
     };
     function sendMessage() {
-        if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN) {
+        if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN && messageSend.value.length > 0) {
             websocket.send(messageSend.value);
             messageSend.value = "";
         }
     }
 
     function chatWith() {
-        var user = document.getElementsByName("username");
-        var message = "user-" + "home"
+        // var user = document.getElementsByName("username");
+        var message = "user-" + "home";
 
         if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN) {
             websocket.send(message);

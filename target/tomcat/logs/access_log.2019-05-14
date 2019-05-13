@@ -1,0 +1,9 @@
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:40:05 +0700] "GET /websocket HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:40:05 +0700] "GET /websocket/ HTTP/1.1" 200 - http-bio-8080-exec-3 26
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:41:41 +0700] "GET /websocket/messenger/undefined HTTP/1.1" 200 - http-bio-8080-exec-5 15
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:41:46 +0700] "GET /websocket/ HTTP/1.1" 200 - http-bio-8080-exec-7 2
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:42:23 +0700] "GET /websocket HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:42:24 +0700] "GET /websocket/ HTTP/1.1" 200 4536 http-bio-8080-exec-3 30
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:42:24 +0700] "GET /websocket/messenger/undefined HTTP/1.1" 101 - http-bio-8080-exec-5 77
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:42:26 +0700] "GET /websocket/ HTTP/1.1" 304 - http-bio-8080-exec-4 4
+0:0:0:0:0:0:0:1 - - [14/May/2019:00:42:26 +0700] "GET /websocket/messenger/undefined HTTP/1.1" 101 - http-bio-8080-exec-7 2
