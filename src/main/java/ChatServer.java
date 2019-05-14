@@ -13,9 +13,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class ChatServer {
     private static Set<ChatServer> endpoints = new CopyOnWriteArraySet<ChatServer>();
     private static HashMap<String, String> users = new HashMap<>();
+//    private static HashMap<String, String> messageQueue = new HashMap<>();
     private Session session;
 //    private HashMap<String, String> receivers = new HashMap<>();
     private String receiver = null;
+
+    private void setReceiver(String receiver){
+        this.receiver  =receiver;
+    }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username){
@@ -23,12 +28,27 @@ public class ChatServer {
         System.out.println(" -session id: " + session.getId());
         System.out.println(" -username: " + username);
 
-//        User user = UserDAO.getUser("admin");
-//        System.out.println(user.getPassword());
-
         this.session = session;
         endpoints.add(this);
         users.put(session.getId(), username);
+
+        loadFriend(session);
+    }
+
+    private void loadMessage(Session session) {
+        try {
+            session.getBasicRemote().sendText(users.get(session.getId()) + ": load message");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFriend(Session session) {
+        try {
+            session.getBasicRemote().sendText(users.get(session.getId()) + ": load friend");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnMessage
@@ -44,12 +64,13 @@ public class ChatServer {
         } else {
             endpoints.forEach(endpoint -> {
                 try {
+                    //gui lai cho chinh no
                     if (endpoint.session == session) {
                         endpoint.session.getBasicRemote().sendText(users.get(session.getId()) + ": " + message);
                     }
 
+
                     if (users.get(endpoint.session.getId()).equals(receiver)){
-                        System.out.println(" -sender: " + users.get(endpoint.session.getId()));
                         System.out.println(" -receiver: " + receiver);
                         endpoint.session.getBasicRemote().sendText(users.get(session.getId()) + ": " + message);
                     }

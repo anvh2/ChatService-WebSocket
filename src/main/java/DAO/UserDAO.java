@@ -4,11 +4,12 @@ import Entity.SessionManager;
 import Entity.User;
 import org.hibernate.Session;
 
+
 public class UserDAO {
-    public User getUser(int id){
+    public static User getUser(String username){
         Session session = SessionManager.getSession();
 
-        return session.find(User.class, id);
+        return session.find(User.class, username);
     }
 
     public void setUser(User user){
@@ -19,14 +20,5 @@ public class UserDAO {
         session.getTransaction().commit();
 
         session.close();
-    }
-
-    public static User getUser(String username){
-//        Query query = SessionManager.getSession().createNativeQuery("select * from user where username = " + username);
-//        query.executeUpdate();
-//
-//        return (User) query.getSingleResult();
-
-        return null;
     }
 }

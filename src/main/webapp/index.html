@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <title>Chat Room</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
-<h1>Demo WebSocket</h1>
-<h3 id="serverStatus"></h3>
+<h1>Chat WebSocket</h1>
+<a href="${pageContext.request.contextPath}/logout">Logout</a>
 <div class="list-group" style="width: 25%;">
-    <button onclick="chatWith()" name="username" value="home" class="list-group-item list-group-item-action">Sherlock Home</button>
-    <button onclick="chatWith()" name="username" value="conan" class="list-group-item list-group-item-action">Detective Conan</button>
-    <button onclick="chatWith()" name="username" value="kid" class="list-group-item list-group-item-action">Kaito Kid</button>
+    <button onclick="chatWith(1)" name="username" value="home" class="list-group-item list-group-item-action">Sherlock Home</button>
+    <button onclick="chatWith(2)" name="username" value="conan" class="list-group-item list-group-item-action">Detective Conan</button>
+    <button onclick="chatWith(3)" name="username" value="kid" class="list-group-item list-group-item-action">Kaito Kid</button>
 </div>
     <div id="chat-frame">
         <div id="name"></div>
@@ -37,10 +38,10 @@
     const websocket = new WebSocket("ws://localhost:8080/websocket/messenger/" + username);
     const messageSend = document.getElementById("textMessage");
     const messageWindow = document.getElementById("textAreaMessage");
-    const status = document.getElementById("serverStatus");
+    //const status = document.getElementById("serverStatus");
 
     websocket.onopen = function() {
-        status.value = "Connected";
+        //status.value = "Connected";
         // alert(websocket.sessionId);
     };
     websocket.onmessage = function(message) {
@@ -62,14 +63,28 @@
         }
     }
 
-    function chatWith() {
+    function chatWith(type) {
         // var user = document.getElementsByName("username");
-        var message = "user-" + "home";
+        var message;
+
+        if (type === 1){
+            message = "user-" + "home";
+        } else if (type === 2){
+            message = "user-" + "conan";
+        } else {
+            message = "user-" + "kid";
+        }
 
         if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN) {
             websocket.send(message);
         }
     }
+
+    // $(document).ready(function () {
+    //     var logout = document.getElementsByClassName("logout");
+    //
+    //     logout.innerHTML += `<a href="${pageContext.request.contextPath}/logout">Logout</a>`;
+    // })
 </script>
 </html>
 
