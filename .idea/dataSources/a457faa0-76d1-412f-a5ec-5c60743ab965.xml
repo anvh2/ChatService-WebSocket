@@ -933,66 +933,98 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="236" parent="4" name="friend"/>
-    <table id="237" parent="4" name="user"/>
-    <column id="238" parent="236" name="id">
+    <table id="236" parent="4" name="Message"/>
+    <table id="237" parent="4" name="User"/>
+    <table id="238" parent="4" name="friend"/>
+    <column id="239" parent="236" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="239" parent="236" name="id_user">
+    <column id="240" parent="236" name="sender">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="240" parent="236" name="id_friend">
+    <column id="241" parent="236" name="receiver">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="241" parent="236" name="id_user">
-      <ColNames>id_user</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <index id="242" parent="236" name="id_friend">
-      <ColNames>id_friend</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
+    <column id="242" parent="236" name="content">
+      <Position>4</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
     <key id="243" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="244" parent="236" name="id_user">
-      <ColNames>id_user</ColNames>
-      <UnderlyingIndexName>id_user</UnderlyingIndexName>
-    </key>
-    <key id="245" parent="236" name="id_friend">
-      <ColNames>id_friend</ColNames>
-      <UnderlyingIndexName>id_friend</UnderlyingIndexName>
-    </key>
-    <column id="246" parent="237" name="username">
+    <column id="244" parent="237" name="username">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="237" name="password">
+    <column id="245" parent="237" name="password">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="248" parent="237" name="PRIMARY">
+    <key id="246" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>username</ColNames>
       <Primary>1</Primary>
+    </key>
+    <column id="247" parent="238" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="248" parent="238" name="id_user">
+      <Position>2</Position>
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="249" parent="238" name="id_friend">
+      <Position>3</Position>
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="250" parent="238" name="id_user">
+      <ColNames>id_user</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="251" parent="238" name="id_friend">
+      <ColNames>id_friend</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="252" parent="238" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="253" parent="238" name="id_user">
+      <ColNames>id_user</ColNames>
+      <UnderlyingIndexName>id_user</UnderlyingIndexName>
+    </key>
+    <key id="254" parent="238" name="id_friend">
+      <ColNames>id_friend</ColNames>
+      <UnderlyingIndexName>id_friend</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

@@ -4,6 +4,7 @@ Entity/Friend.class
 Account/SocialMedia/Facebook/FBGraph.class
 Security/SecurityFilter.class
 Account/SocialMedia/Facebook/LoginWithFB.class
+DAO/MessageDAO.class
 Message/ChatUserServer.class
 Message/MessageDecoder.class
 ChatServer.class
@@ -12,9 +13,7 @@ DAO/UserDAO.class
 Utils/SecurityUtils.class
 Entity/User.class
 Account/Login.class
-DAO/MessengerDAO.class
-Entity/Messenger.class
 DAO/FriendDAO.class
-Message/Message.class
 Account/Logout.class
 Account/SocialMedia/Facebook/FBConnection.class
+Entity/Message.class

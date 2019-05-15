@@ -12,7 +12,7 @@ public class UserDAO {
         return session.find(User.class, username);
     }
 
-    public void setUser(User user){
+    public static void setUser(User user){
         Session session = SessionManager.getSession();
 
         session.getTransaction().begin();

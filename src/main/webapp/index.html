@@ -5,19 +5,30 @@
     <title>Chat Room</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <style>
+        .list-friend :hover{
+            cursor: pointer;
+            color: #18f;
+        }
+    </style>
 </head>
 <body>
-<h1>Chat WebSocket</h1>
-<a href="${pageContext.request.contextPath}/logout">Logout</a>
-<div class="list-group" style="width: 25%;">
-    <button onclick="chatWith(1)" name="username" value="home" class="list-group-item list-group-item-action">Sherlock Home</button>
-    <button onclick="chatWith(2)" name="username" value="conan" class="list-group-item list-group-item-action">Detective Conan</button>
-    <button onclick="chatWith(3)" name="username" value="kid" class="list-group-item list-group-item-action">Kaito Kid</button>
-</div>
+    <h2>Chat WebSocket || <a href="${pageContext.request.contextPath}/logout">Logout</a></h2>
+    <div  style="float: left; width: 20%;">
+        <h4>Friends:</h4>
+        <ul class="list-group list-group-flush list-friend">
+            <li onclick="chatWith(1)" class="list-group-item">Admin</li>
+            <li onclick="chatWith(2)" class="list-group-item">Home</li>
+            <li onclick="chatWith(3)" class="list-group-item">Conan</li>
+            <li onclick="chatWith(4)" class="list-group-item">Kid</li>
+        </ul>
+    </div>
+    
     <div id="chat-frame">
+        <h4>Chat:</h4>
         <div id="name"></div>
-        <input id="textMessage" type="text" />
-        <input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>
+        <input onkeypress="sendMessage(event)" id="textMessage" type="text" />
+        <input onclick="sendMessage()" value="Send Message" type="button"/> <br/><br/>
 
         <textarea id="textAreaMessage" rows="10" cols="50"></textarea>
     </div>
@@ -38,17 +49,24 @@
     const websocket = new WebSocket("ws://localhost:8080/websocket/messenger/" + username);
     const messageSend = document.getElementById("textMessage");
     const messageWindow = document.getElementById("textAreaMessage");
-    //const status = document.getElementById("serverStatus");
+
+    class Message{
+        constructor(sender, receiver, content) {
+            this.sender = sender;
+            this.receiver = receiver;
+            this.content = content;
+        }
+    }
+
 
     websocket.onopen = function() {
         //status.value = "Connected";
         // alert(websocket.sessionId);
     };
     websocket.onmessage = function(message) {
-        if (message.data.length > 0){
-            console.log(message);
-            messageWindow.value += message.data + "\n";
-        }
+        var object = JSON.parse(message.data);
+        console.log(object);
+        messageWindow.value += object.sender + ": " + object.content + "\n";
     };
     websocket.onclose = function() {
         messageWindow.value = "Server disconnected";
@@ -56,20 +74,39 @@
     websocket.onerror = function(message) {
         messageWindow.value += "Error: " + message + "\n";
     };
+
     function sendMessage() {
         if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN && messageSend.value.length > 0) {
             websocket.send(messageSend.value);
             messageSend.value = "";
+        } else {
+            console.log("State of websocket is not open");
+        }
+    }
+
+    function sendMessage(event) {
+        if (event.keyCode === 13){
+            if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN && messageSend.value.length > 0) {
+                websocket.send(messageSend.value);
+                messageSend.value = "";
+            } else {
+                console.log("State of websocket is not open");
+            }
         }
     }
 
     function chatWith(type) {
-        // var user = document.getElementsByName("username");
+        var user = document.getElementsByName("username");
         var message;
 
+        //delete message window
+        messageWindow.value = "";
+
         if (type === 1){
-            message = "user-" + "home";
+            message = "user-" + "admin";
         } else if (type === 2){
+            message = "user-" + "home";
+        } else if (type === 3) {
             message = "user-" + "conan";
         } else {
             message = "user-" + "kid";
@@ -79,59 +116,8 @@
             websocket.send(message);
         }
     }
-
-    // $(document).ready(function () {
-    //     var logout = document.getElementsByClassName("logout");
-    //
-    //     logout.innerHTML += `<a href="${pageContext.request.contextPath}/logout">Logout</a>`;
-    // })
 </script>
 </html>
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Chat</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<input id="textMessage" type="text" />-->
-<!--<input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>-->
-
-<!--<textarea id="textAreaMessage" rows="10" cols="50"></textarea>-->
-<!--<script type="text/javascript">-->
-<!--    var messageSend = document.getElementById("textMessage");-->
-<!--    var messageWindow = document.getElementById("textAreaMessage");-->
-<!--    const websocket = new WebSocket("ws://localhost:8000/chat/hoangan");-->
-
-
-
-<!--    class Message{-->
-<!--        constructor(sender, receiver, content){-->
-<!--            this.sender = sender;-->
-<!--            this.receiver = receiver;-->
-<!--            this.content = content;-->
-<!--        }-->
-<!--    }-->
-
-<!--    websocket.onopen = function (event) {-->
-<!--        messageWindow.value += "Server connected!";-->
-<!--    }-->
-
-<!--    websocket.onmessage = function (event) {-->
-<!--        var object = JSON.parse(event.data);-->
-<!--        console.log(object);-->
-<!--        messageWindow.value += object.content;-->
-<!--    }-->
-
-<!--    websocket.onclose = function (event) {-->
-
-<!--    }-->
-
-<!--    websocket.onerror = function (event) {-->
-
-<!--    }-->
 
 <!--    function sendMessage() {-->
 <!--        if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {-->
@@ -140,6 +126,3 @@
 <!--            messageSend.value ="";-->
 <!--        }-->
 <!--    }-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->

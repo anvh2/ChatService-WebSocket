@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/login.jsp");
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/login.html");
 
         dispatcher.forward(request, response);
     }
@@ -42,20 +42,5 @@ public class Login extends HttpServlet {
             AppUtils.storeLoginedUser(request.getSession(), user);
             response.sendRedirect(request.getContextPath() + "/?username=" +user.getUsername());
         }
-
-//        int redirectID = -1;
-//        try {
-//            redirectID = Integer.parseInt(request.getParameter("redirectID"));
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
-//        String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectID);
-//
-//        if (requestUri != null){
-//            response.sendRedirect(requestUri);
-//        } else {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//        }
     }
 }

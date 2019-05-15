@@ -12,6 +12,6 @@
 </head>
 <body>
 <h1>login</h1>
-<a href="https://www.facebook.com/dialog/oauth?client_id=359123991240252&redirect_uri=https://localhost:8443/AccessFacebook/login-facebook">Login Facebook</a>
+<a href="https://www.facebook.com/dialog/oauth?client_id=2354188414857594&redirect_uri=http://localhost:8080/websocket/">Login Facebook</a>
 </body>
 </html>

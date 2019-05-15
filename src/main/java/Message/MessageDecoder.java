@@ -1,5 +1,6 @@
 package Message;
 
+import Entity.Message;
 import com.google.gson.Gson;
 
 import javax.websocket.Decoder;

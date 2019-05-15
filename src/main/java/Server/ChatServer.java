@@ -1,3 +1,5 @@
+package Server;
+
 import DAO.MessageDAO;
 import Entity.Message;
 import Message.MessageDecoder;

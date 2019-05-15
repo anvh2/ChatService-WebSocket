@@ -1,5 +1,7 @@
 package Message;
 
+import Entity.Message;
+
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -28,7 +30,7 @@ public class ChatUserServer {
 
     @OnMessage
     public void onMessage(Session session, Message message){
-        message.setFrom(users.get(session.getId()));
+        //message.setFrom(users.get(session.getId()));
         broadcastMessage(message);
     }
 

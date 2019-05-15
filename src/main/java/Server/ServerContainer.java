@@ -1,3 +1,5 @@
+//package Server;
+//
 //import javax.xml.bind.DatatypeConverter;
 //import java.io.*;
 //import java.net.ServerSocket;
@@ -51,9 +53,7 @@
 //
 //                }
 //            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
+//        } catch (IOException | NoSuchAlgorithmException e) {
 //            e.printStackTrace();
 //        }
 //    }

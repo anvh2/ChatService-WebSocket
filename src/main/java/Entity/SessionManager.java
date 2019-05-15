@@ -13,11 +13,16 @@ public class SessionManager {
         Configuration configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
         configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Message.class);
         ServiceRegistry srvcReg = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         sessionFactory = configuration.buildSessionFactory(srvcReg);
     }
 
     public static Session getSession() {
         return sessionFactory.openSession();
+    }
+
+    public static SessionFactory getSessionFactory(){
+        return sessionFactory;
     }
 }
