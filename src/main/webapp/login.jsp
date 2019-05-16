@@ -138,9 +138,9 @@
         <div class="sign-in">
             <p class="text-center">Login with your social media account</p>
             <div class="text-center social-btn">
-                <a href="websocket/loginfb" class="btn btn-facebook"><i class="fab fa-facebook-f"></i>&nbsp; Facebook</a>
+                <a href="<%=request.getContextPath()%>/loginfb" class="btn btn-facebook"><i class="fab fa-facebook-f"></i>&nbsp; Facebook</a>
                 <!-- <a href="#" class="btn btn-github"><i class="fab fa-github"></i>&nbsp; Github</a> -->
-                <a href="#" class="btn btn-google"><i class="fab fa-google"></i>&nbsp; Google</a>
+                <a href="<%=request.getContextPath()%>/logingg" class="btn btn-google"><i class="fab fa-google"></i>&nbsp; Google</a>
             </div>
         </div>
     </form>
