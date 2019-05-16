@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/login.html");
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/login.jsp");
 
         dispatcher.forward(request, response);
     }
@@ -35,7 +35,7 @@ public class Login extends HttpServlet {
 
             writer.println("<script>alert('Invalid username or password')</script>");
 
-            RequestDispatcher dispatcher= this.getServletContext().getRequestDispatcher("/login.html");
+            RequestDispatcher dispatcher= this.getServletContext().getRequestDispatcher("/login.jsp");
 
             dispatcher.forward(request, response);
         } else if (user.getPassword().equals(password)){

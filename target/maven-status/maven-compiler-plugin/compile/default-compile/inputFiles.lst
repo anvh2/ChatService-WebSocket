@@ -13,6 +13,7 @@
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Entity/Friend.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Server/ChatServer.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Account/Login.java
+/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Config.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Account/SocialMedia/Facebook/LoginWithFB.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Utils/AppUtils.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Entity/User.java

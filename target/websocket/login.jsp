@@ -12,6 +12,7 @@
 </head>
 <body>
 <h1>login</h1>
+<%=request.getContextPath()%>
 <a href="https://www.facebook.com/dialog/oauth?client_id=2354188414857594&redirect_uri=http://localhost:8080/websocket/">Login Facebook</a>
 </body>
 </html>

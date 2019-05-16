@@ -1,6 +1,5 @@
 package Account.SocialMedia.Facebook;
 
-import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
