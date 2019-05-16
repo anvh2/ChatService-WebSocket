@@ -16,7 +16,7 @@
     <h2>Chat WebSocket || <a href="${pageContext.request.contextPath}/logout">Logout</a></h2>
     <div  style="float: left; width: 20%;">
         <h4>Friends:</h4>
-        <ul class="list-group list-group-flush list-friend">
+        <ul id="list-freind" class="list-group list-group-flush list-friend">
             <li onclick="chatWith(1)" class="list-group-item">Admin</li>
             <li onclick="chatWith(2)" class="list-group-item">Home</li>
             <li onclick="chatWith(3)" class="list-group-item">Conan</li>
@@ -27,8 +27,8 @@
     <div id="chat-frame">
         <h4>Chat:</h4>
         <div id="name"></div>
-        <input id="textMessage" type="text" />
-        <input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>
+        <input autofocus onkeypress="sendMessage(event)" id="textMessage" type="text" />
+        <input readonly onclick="sendMessage()" value="Send Message" type="button"/> <br/><br/>
 
         <textarea id="textAreaMessage" rows="10" cols="50"></textarea>
     </div>
@@ -49,23 +49,29 @@
     const websocket = new WebSocket("ws://localhost:8080/websocket/messenger/" + username);
     const messageSend = document.getElementById("textMessage");
     const messageWindow = document.getElementById("textAreaMessage");
-    //const status = document.getElementById("serverStatus");
+
+    class Message{
+        constructor(sender, receiver, content) {
+            this.sender = sender;
+            this.receiver = receiver;
+            this.content = content;
+        }
+    }
+
 
     websocket.onopen = function() {
         //status.value = "Connected";
         // alert(websocket.sessionId);
     };
     websocket.onmessage = function(message) {
-        function loadFriend(friend) {
-            var listFriend = document.getElementsByClassName("list-friend");
+        var object = JSON.parse(message.data);
 
-            listFriend.innerHTML += `<li class="list-group-item">` + friend + `</li>`;
+        if(object.content === "online"){
+            appendOnlineFriend(object.receiver);
         }
 
-        if (message.data.length > 0){
-            console.log(message);
-            messageWindow.value += message.data + "\n";
-        }
+        console.log(object);
+        messageWindow.value += object.sender + ": " + object.content + "\n";
     };
     websocket.onclose = function() {
         messageWindow.value = "Server disconnected";
@@ -73,16 +79,33 @@
     websocket.onerror = function(message) {
         messageWindow.value += "Error: " + message + "\n";
     };
+
     function sendMessage() {
         if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN && messageSend.value.length > 0) {
             websocket.send(messageSend.value);
             messageSend.value = "";
+        } else {
+            console.log("State of websocket is not open");
+        }
+    }
+
+    function sendMessage(event) {
+        if (event.keyCode === 13){
+            if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN && messageSend.value.length > 0) {
+                websocket.send(messageSend.value);
+                messageSend.value = "";
+            } else {
+                console.log("State of websocket is not open");
+            }
         }
     }
 
     function chatWith(type) {
         var user = document.getElementsByName("username");
         var message;
+
+        //delete message window
+        messageWindow.value = "";
 
         if (type === 1){
             message = "user-" + "admin";
@@ -99,58 +122,22 @@
         }
     }
 
-    // $(document).ready(function () {
-    //     var logout = document.getElementsByClassName("logout");
-    //
-    //     logout.innerHTML += `<a href="${pageContext.request.contextPath}/logout">Logout</a>`;
-    // })
+    function appendOnlineFriend(name){
+        var str = "<li onclick=\"chatWith(4)\" class=\"list-group-item\">" + name + "</li>";
+
+        $("#list-freind").append(str);
+    }
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+
+        // var listFreind = document.getElementsByClassName("list-freind");
+        //
+        // listFreind.innerHTML += "<li onclick=\"chatWith(4)\" class=\"list-group-item\">Kid</li>";
+
+    });
 </script>
 </html>
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Chat</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<input id="textMessage" type="text" />-->
-<!--<input onclick="sendMessage()" value="Send Message" type="button" /> <br/><br/>-->
-
-<!--<textarea id="textAreaMessage" rows="10" cols="50"></textarea>-->
-<!--<script type="text/javascript">-->
-<!--    var messageSend = document.getElementById("textMessage");-->
-<!--    var messageWindow = document.getElementById("textAreaMessage");-->
-<!--    const websocket = new WebSocket("ws://localhost:8000/chat/hoangan");-->
-
-
-
-<!--    class Message{-->
-<!--        constructor(sender, receiver, content){-->
-<!--            this.sender = sender;-->
-<!--            this.receiver = receiver;-->
-<!--            this.content = content;-->
-<!--        }-->
-<!--    }-->
-
-<!--    websocket.onopen = function (event) {-->
-<!--        messageWindow.value += "Server connected!";-->
-<!--    }-->
-
-<!--    websocket.onmessage = function (event) {-->
-<!--        var object = JSON.parse(event.data);-->
-<!--        console.log(object);-->
-<!--        messageWindow.value += object.content;-->
-<!--    }-->
-
-<!--    websocket.onclose = function (event) {-->
-
-<!--    }-->
-
-<!--    websocket.onerror = function (event) {-->
-
-<!--    }-->
 
 <!--    function sendMessage() {-->
 <!--        if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {-->
@@ -159,6 +146,3 @@
 <!--            messageSend.value ="";-->
 <!--        }-->
 <!--    }-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->

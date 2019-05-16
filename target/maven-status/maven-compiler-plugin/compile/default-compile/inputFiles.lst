@@ -1,9 +1,8 @@
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/DAO/UserDAO.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/DAO/MessageDAO.java
-/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Message/ChatUserServer.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Message/MessageDecoder.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Entity/Message.java
-/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Message/ClientThread.java
+/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Server/ServerContainer.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Account/SocialMedia/Facebook/FBGraph.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/DAO/FriendDAO.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Security/SecurityFilter.java
@@ -12,11 +11,9 @@
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Message/MessageEncoder.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Account/SocialMedia/Facebook/FBConnection.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Entity/Friend.java
+/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Server/ChatServer.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Account/Login.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Account/SocialMedia/Facebook/LoginWithFB.java
-/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Message/ChatRoomServer.java
-/home/cpu11499/Github/ChatService-WebSocket/src/main/java/ChatServer.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Utils/AppUtils.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Entity/User.java
 /home/cpu11499/Github/ChatService-WebSocket/src/main/java/Entity/SessionManager.java
-/home/cpu11499/Github/ChatService-WebSocket/src/main/java/Message/ServerContainer.java

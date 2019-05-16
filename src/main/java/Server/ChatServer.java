@@ -8,9 +8,7 @@ import Message.MessageEncoder;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -30,6 +28,11 @@ public class ChatServer {
         this.session = session;
         endpoints.add(this);
         users.put(session.getId(), username);
+
+        //gui den tat ca cac user khac la thang nay online
+        endpoints.forEach(endpoint -> {
+            //Message.sendMessage(endpoint.session, new Message(username, "",""));
+        });
     }
 
     private void loadFriend(Session session) {
@@ -38,57 +41,43 @@ public class ChatServer {
 
     @OnMessage
     public void onMessage(Session session, String message){
+        //log
         System.out.println("Server on message");
         System.out.println(" -message: " + message);
         System.out.println(" -session id: " + session.getId());
         System.out.println(" -username: " + users.get(session.getId()));
 
+        //kiem tra su kien kich chuot vao ban be de subcribe topic
         if (message.length() > 4 && message.substring(0, 4).equals("user")){
             System.out.println(" -receiver: " + message.substring(5));
             receiver = message.substring(5);
 
-            sendRecentMessage(session);
+            //send recent message to client
+            Message.sendRecentMessage(session, users.get(session.getId()), receiver);
         } else {
             Message messObject = new Message(users.get(session.getId()), receiver, message);
 
+            //kiem tra topic nao can gui va gui message toi client
             endpoints.forEach(endpoint -> {
-                try {
-                    //gui lai cho chinh no
-                    if (endpoint.session == session) {
-                        endpoint.session.getBasicRemote().sendObject(messObject);
+                //gui lai cho chinh no
+                if (endpoint.session == session) {
+                    Message.sendMessage(endpoint.session, messObject);
 
-                        //save message to db
-                        try{
-                            MessageDAO.saveMessage(messObject);
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        System.out.println("sender:" + users.get(session.getId()) + " receiver: " + receiver + " message: " + message);
+                    //save this message to db
+                    try{
+                        MessageDAO.saveMessage(messObject);
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
+                    System.out.println("sender:" + users.get(session.getId()) + " receiver: " + receiver + " message: " + message);
+                }
 
-
-                    if (users.get(endpoint.session.getId()).equals(receiver)){
-                        System.out.println(" -receiver: " + receiver);
-                        endpoint.session.getBasicRemote().sendObject(messObject);
-                    }
-                } catch (IOException | EncodeException e) {
-                    e.printStackTrace();
+                //kiem tra nguoi can gui va gui tin nhan
+                if (users.get(endpoint.session.getId()).equals(receiver)){
+                    System.out.println(" -receiver: " + receiver);
+                    Message.sendMessage(endpoint.session, messObject);
                 }
             });
-        }
-    }
-
-    private void sendRecentMessage(Session session) {
-        //load message from db
-        List<Message> messages = MessageDAO.getMessage(users.get(session.getId()), receiver);
-
-        try {
-            //send message loaded to client
-            for (int i = 0; i < messages.size(); i++){
-                session.getBasicRemote().sendObject(messages.get(i));
-            }
-        } catch (IOException | EncodeException e) {
-            e.printStackTrace();
         }
     }
 
