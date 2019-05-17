@@ -17,10 +17,10 @@
 <div  style="float: left; width: 20%;">
     <h4>Friends:</h4>
     <ul id="list-friend" class="list-group list-group-flush list-friend">
-<%--        <li onclick="chatWith('admin')" class="list-group-item">Admin</li>--%>
-<%--        <li onclick="chatWith('home')" class="list-group-item">Home</li>--%>
-<%--        <li onclick="chatWith('conan')" class="list-group-item">Conan</li>--%>
-<%--        <li onclick="chatWith('kid')" class="list-group-item">Kid</li>--%>
+        <li onclick="chatWith('admin')" class="list-group-item">Admin</li>
+        <li onclick="chatWith('home')" class="list-group-item">Home</li>
+        <li onclick="chatWith('conan')" class="list-group-item">Conan</li>
+        <li onclick="chatWith('kid')" class="list-group-item">Kid</li>
     </ul>
 </div>
 

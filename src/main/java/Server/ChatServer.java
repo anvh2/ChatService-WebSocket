@@ -8,15 +8,10 @@ import Message.MessageEncoder;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value = "/messenger/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class ChatServer {
-    private static Set<ChatServer> endpoints = new CopyOnWriteArraySet<ChatServer>();
-    private static HashMap<String, String> users = new HashMap<>();
-    private Session session;
+    private static UsersSession users = new UsersSession();
     private String receiver = null;
 
     @OnOpen
@@ -25,22 +20,8 @@ public class ChatServer {
         System.out.println(" -session id: " + session.getId());
         System.out.println(" -username: " + username);
 
-        this.session = session;
-        endpoints.add(this);
-        users.put(session.getId(), username);
-
-        endpoints.forEach(endpoint -> {
-            if (!users.get(endpoint.session.getId()).equals(users.get(session.getId()))){
-                //gui den tat ca cac user khac la user nay online
-                Message.sendMessage(endpoint.session, new Message(username, "","online"));
-
-                //gui den session nay nhung user dang online
-                Message.sendMessage(session, new Message(users.get(endpoint.session.getId()), "", "online"));
-            }
-        });
-    }
-
-    private void loadFriend(Session session) {
+        users.addNewUser(session, username);
+        users.loadAndAddOnlineUser(session, username);
 
     }
 
@@ -50,7 +31,7 @@ public class ChatServer {
         System.out.println("Server on message");
         System.out.println(" -message: " + message);
         System.out.println(" -session id: " + session.getId());
-        System.out.println(" -username: " + users.get(session.getId()));
+        System.out.println(" -username: " + users.getUserName(session));
 
         //kiem tra su kien kich chuot vao ban be de subcribe topic
         if (message.length() > 4 && message.substring(0, 4).equals("user")){
@@ -58,31 +39,20 @@ public class ChatServer {
             receiver = message.substring(5);
 
             //send recent message to client
-            Message.sendRecentMessage(session, users.get(session.getId()), receiver);
+            users.sendRecentMessage(session, receiver);
         } else {
-            Message messObject = new Message(users.get(session.getId()), receiver, message);
+            Message messObject = new Message(users.getUserName(session), receiver, message);
 
-            //kiem tra topic nao can gui va gui message toi client
-            endpoints.forEach(endpoint -> {
-                //gui lai cho chinh no
-                if (endpoint.session == session) {
-                    Message.sendMessage(endpoint.session, messObject);
+            //save this message to db
+            try{
+                MessageDAO.saveMessage(messObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                    //save this message to db
-                    try{
-                        MessageDAO.saveMessage(messObject);
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    System.out.println("sender:" + users.get(session.getId()) + " receiver: " + receiver + " message: " + message);
-                }
+            users.sendMessage(session, receiver, messObject);
+            System.out.println(" -sender:" + users.getUserName(session) + " receiver: " + receiver + " message: " + message);
 
-                //kiem tra nguoi can gui va gui tin nhan
-                if (users.get(endpoint.session.getId()).equals(receiver)){
-                    System.out.println(" -receiver: " + receiver);
-                    Message.sendMessage(endpoint.session, messObject);
-                }
-            });
         }
     }
 
@@ -96,15 +66,9 @@ public class ChatServer {
     public void onClose(Session session){
         System.out.println("Server is close");
         System.out.println(" -session id: " + session.getId());
-        System.out.println(" -username: " + users.get(session.getId()));
+        System.out.println(" -username: " + users.getUserName(session));
 
-        endpoints.forEach(endpoint -> {
-            if (endpoint.session != session){
-                Message.sendMessage(endpoint.session, new Message(users.get(session.getId()), "","offline"));
-            }
-        });
-
-        endpoints.remove(this);
-        users.remove(session.getId());
+        users.removeOfflineUser(session);
+        users.removeUser(session);
     }
 }

@@ -2,6 +2,7 @@ Entity/SessionManager.class
 Message/MessageEncoder.class
 Entity/Friend.class
 Account/SocialMedia/Facebook/FBGraph.class
+Server/UsersSession.class
 Security/SecurityFilter.class
 Account/SocialMedia/Facebook/LoginWithFB.class
 DAO/MessageDAO.class
