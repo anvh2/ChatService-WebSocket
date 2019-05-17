@@ -30,7 +30,8 @@ public class SecurityFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         } else if (path.equals("/loginfb")){
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/loginfb");
+            filterChain.doFilter(request, response);
+            return;
         }
 
         if (loginedUser != null) {

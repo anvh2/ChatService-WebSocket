@@ -29,9 +29,14 @@ public class ChatServer {
         endpoints.add(this);
         users.put(session.getId(), username);
 
-        //gui den tat ca cac user khac la thang nay online
         endpoints.forEach(endpoint -> {
-            //Message.sendMessage(endpoint.session, new Message(username, "",""));
+            if (!users.get(endpoint.session.getId()).equals(users.get(session.getId()))){
+                //gui den tat ca cac user khac la user nay online
+                Message.sendMessage(endpoint.session, new Message(username, "","online"));
+
+                //gui den session nay nhung user dang online
+                Message.sendMessage(session, new Message(users.get(endpoint.session.getId()), "", "online"));
+            }
         });
     }
 
@@ -92,6 +97,12 @@ public class ChatServer {
         System.out.println("Server is close");
         System.out.println(" -session id: " + session.getId());
         System.out.println(" -username: " + users.get(session.getId()));
+
+        endpoints.forEach(endpoint -> {
+            if (endpoint.session != session){
+                Message.sendMessage(endpoint.session, new Message(users.get(session.getId()), "","offline"));
+            }
+        });
 
         endpoints.remove(this);
         users.remove(session.getId());

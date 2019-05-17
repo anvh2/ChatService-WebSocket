@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.stream.StreamSupport;
 
 @WebServlet("/loginfb")
 public class LoginWithFB extends HttpServlet {
@@ -16,6 +17,8 @@ public class LoginWithFB extends HttpServlet {
         String code ="";
 
         code = request.getParameter("code");
+
+        System.out.println("Code is ");
 
         if (code == null || code.equals("")){
             throw new RuntimeException("ERROR: Didn't get code parameter in call back");
@@ -37,6 +40,7 @@ public class LoginWithFB extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String code = request.getParameter("code");
+        System.out.println("code: " + code);
 
         if (code == null || code.equals("")){
             request.getRequestDispatcher("/login.jsp").forward(request, response);
