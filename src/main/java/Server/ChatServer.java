@@ -1,18 +1,23 @@
 package Server;
 
-import DAO.MessageDAO;
-import Entity.Message;
 import Message.MessageDecoder;
 import Message.MessageEncoder;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value = "/messenger/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class ChatServer {
-    private static UsersSession users = new UsersSession();
-    private String receiver = null;
+    private static Set<ChatServer> endpoints = new CopyOnWriteArraySet<ChatServer>();
+    private UserSession userSession = new UserSession();
+
+    //get session of this endpoint
+    public Session getSessionOfEndpoint(){
+        return userSession.getSession();
+    }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username){
@@ -20,9 +25,9 @@ public class ChatServer {
         System.out.println(" -session id: " + session.getId());
         System.out.println(" -username: " + username);
 
-        users.addNewUser(session, username);
-        users.loadAndAddOnlineUser(session, username);
-
+        endpoints.add(this);
+        userSession.addNewUser(session, username);
+        userSession.loadUserOnline(endpoints, username);
     }
 
     @OnMessage
@@ -31,28 +36,17 @@ public class ChatServer {
         System.out.println("Server on message");
         System.out.println(" -message: " + message);
         System.out.println(" -session id: " + session.getId());
-        System.out.println(" -username: " + users.getUserName(session));
+//        System.out.println(" -username: " + users.get(session.getId()));
 
-        //kiem tra su kien kich chuot vao ban be de subcribe topic
+//        //kiem tra su kien kich chuot vao ban be de subcribe topic
         if (message.length() > 4 && message.substring(0, 4).equals("user")){
             System.out.println(" -receiver: " + message.substring(5));
-            receiver = message.substring(5);
+            userSession.setReceiver(message.substring(5));
 
             //send recent message to client
-            users.sendRecentMessage(session, receiver);
-        } else {
-            Message messObject = new Message(users.getUserName(session), receiver, message);
-
-            //save this message to db
-            try{
-                MessageDAO.saveMessage(messObject);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            users.sendMessage(session, receiver, messObject);
-            System.out.println(" -sender:" + users.getUserName(session) + " receiver: " + receiver + " message: " + message);
-
+            userSession.sendRecentMessage(session);
+        } else { // neu khong phai la 1 event message thi gui tin nhan giua cac user
+            userSession.sendMessage(endpoints, message);
         }
     }
 
@@ -66,9 +60,10 @@ public class ChatServer {
     public void onClose(Session session){
         System.out.println("Server is close");
         System.out.println(" -session id: " + session.getId());
-        System.out.println(" -username: " + users.getUserName(session));
+//        System.out.println(" -username: " + users.get(session.getId()));
 
-        users.removeOfflineUser(session);
-        users.removeUser(session);
+        //remove all data of user
+        userSession.removeOfflineUser(endpoints, session);
+        endpoints.remove(this);
     }
 }
