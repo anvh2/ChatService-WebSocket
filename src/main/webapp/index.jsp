@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat Room</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <style>
         .list-friend :hover{
@@ -16,11 +16,11 @@
 <h2>Chat WebSocket || <a href="<%=request.getContextPath()%>/logout">Logout</a></h2>
 <div  style="float: left; width: 20%;">
     <h4>Friends:</h4>
-    <ul id="list-freind" class="list-group list-group-flush list-friend">
-        <li onclick="chatWith('admin')" class="list-group-item">Admin</li>
-        <li onclick="chatWith('home')" class="list-group-item">Home</li>
-        <li onclick="chatWith('conan')" class="list-group-item">Conan</li>
-        <li onclick="chatWith('kid')" class="list-group-item">Kid</li>
+    <ul id="list-friend" class="list-group list-group-flush list-friend">
+        <%--        <li onclick="chatWith('admin')" class="list-group-item">Admin</li>--%>
+        <%--        <li onclick="chatWith('home')" class="list-group-item">Home</li>--%>
+        <%--        <li onclick="chatWith('conan')" class="list-group-item">Conan</li>--%>
+        <%--        <li onclick="chatWith('kid')" class="list-group-item">Kid</li>--%>
     </ul>
 </div>
 
@@ -51,14 +51,12 @@
     const messageWindow = document.getElementById("textAreaMessage");
 
     class Message{
-        constructor(sender, receiver, content, message) {
+        constructor(sender, receiver, content) {
             this.sender = sender;
             this.receiver = receiver;
             this.content = content;
-            this.message = message;
         }
     }
-
 
     websocket.onopen = function() {
         //status.value = "Connected";
@@ -68,8 +66,10 @@
         var object = JSON.parse(message.data);
         console.log(object);
 
-        if(object.message === "online"){
-            appendOnlineFriend(object.sender);
+        if(object.content === "online"){
+            appendOnlineFriend(object.sender, "");
+        } else if(object.content === "offline"){
+            removeOnlineFriend(object.sender, "");
         } else {
             messageWindow.value += object.sender + ": " + object.content + "\n";
         }
@@ -115,10 +115,35 @@
         }
     }
 
-    function appendOnlineFriend(username, name){
-        var str = "<li onclick=\"chatWith(username)\" class=\"list-group-item\">" + name + "</li>";
+    function appendOnlineFriend(newusername, name){
+        const container = document.getElementById("list-friend");
+        const element = document.createElement('li');
 
-        $("#list-freind").append(str);
+        element.className = "list-group-item";
+        element.id = newusername;
+        element.textContent = newusername;
+
+        element.addEventListener('click', () => {
+            var user = document.getElementsByName("username");
+            var message;
+
+            //delete message window
+            messageWindow.value = "";
+
+            message = "user-" + newusername;
+
+            if (typeof websocket != 'undefined' && websocket.readyState === WebSocket.OPEN) {
+                websocket.send(message);
+            }
+        })
+
+        container.appendChild(element);
+    }
+
+    function removeOnlineFriend(username, name){
+        var li = document.getElementById(username);
+
+        li.parentNode.removeChild(li);
     }
 
     $( document ).ready(function() {

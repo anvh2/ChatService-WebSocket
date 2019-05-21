@@ -40,7 +40,7 @@ public class Login extends HttpServlet {
             dispatcher.forward(request, response);
         } else if (user.getPassword().equals(password)){
             AppUtils.storeLoginedUser(request.getSession(), user);
-            response.sendRedirect(request.getContextPath() + "/?username=" +user.getUsername());
+            response.sendRedirect(request.getContextPath() + "/messenger.jsp?username=" + username);
         }
     }
 }

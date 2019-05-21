@@ -29,6 +29,9 @@ public class SecurityFilter implements Filter {
         if (path.equals("/login")){
             filterChain.doFilter(request, response);
             return;
+        } else if (path.equals("/loginfb")){
+            filterChain.doFilter(request, response);
+            return;
         }
 
         if (loginedUser != null) {

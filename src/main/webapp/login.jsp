@@ -1,4 +1,4 @@
-<%--&lt;%&ndash;--%>
+<%@ page import="Account.SocialMedia.Facebook.FBConnection" %><%--&lt;%&ndash;--%>
 <%--  Created by IntelliJ IDEA.--%>
 <%--  User: cpu11499--%>
 <%--  Date: 14/05/2019--%>
@@ -32,8 +32,8 @@
             padding: 0;
             font-family: sans-serif;
             /*background-image: url("loginpage-background.png");*/
-            background-size: cover;
-            background-repeat: no-repeat;
+            /*background-size: cover;*/
+            /*background-repeat: no-repeat;*/
             opacity: 0.9;
         }
         .container {
@@ -138,9 +138,9 @@
         <div class="sign-in">
             <p class="text-center">Login with your social media account</p>
             <div class="text-center social-btn">
-                <a href="websocket/loginfb" class="btn btn-facebook"><i class="fab fa-facebook-f"></i>&nbsp; Facebook</a>
+                <a href="<%=new FBConnection().getFBAuthUrl()%>" class="btn btn-facebook"><i class="fab fa-facebook-f"></i>&nbsp; Facebook</a>
                 <!-- <a href="#" class="btn btn-github"><i class="fab fa-github"></i>&nbsp; Github</a> -->
-                <a href="#" class="btn btn-google"><i class="fab fa-google"></i>&nbsp; Google</a>
+                <a href="<%=request.getContextPath()%>/logingg" class="btn btn-google"><i class="fab fa-google"></i>&nbsp; Google</a>
             </div>
         </div>
     </form>

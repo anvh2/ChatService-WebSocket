@@ -16,13 +16,17 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "fullname")
+    private String fullname;
+
     public User(){
 
     }
 
-    public User(String username, String password){
+    public User(String username, String password, String fullname){
         this.username = username;
         this.password = password;
+        this.fullname = fullname;
     }
 
     public String getUsername() {
